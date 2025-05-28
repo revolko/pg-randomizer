@@ -16,6 +16,19 @@ defmodule PgRandomizer do
     :world
   end
 
+  @doc """
+  Generator of (for now only insert) SQL queries.
+  Expects number of queries to generate and
+  table specification (map with `table_name`, `columns`, and `types`).
+
+  ## Examples
+
+      {:ok, queries } = PgRandomizer.generator(10, [
+        %{table_name: "table", columns: ["a", "b"], types: [:integer, :string]},
+        %{table_name: "table2", columns: ["a", "b"], types: [:integer, :string]},
+      ])
+
+  """
   @spec generator(integer, list(map())) :: {:ok, list(charlist())}
   def generator(n, opts) when n > 0 do
     # create insert query for each table
