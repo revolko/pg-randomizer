@@ -1,21 +1,13 @@
 # PgRandomizer
 
-**TODO: Add description**
+Simple generator of random data for Postgres database. Currently supports only random integer and strings.
 
-## Installation
+## How to use
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `pg_randomizer` to your list of dependencies in `mix.exs`:
+There are two methods that can be invoked: `generate` and `generate_with_connection`. Both accept number of
+queries to generate and tables options (see [example script](./example.exs) for more info). The latter method
+accepts map for database connection (again see [example](./example.exs)).
 
-```elixir
-def deps do
-  [
-    {:pg_randomizer, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/pg_randomizer>.
-
+In the root of the repository you can find [docker compose](./docker-compose.yml) file that create Postgres
+database and initializes tables. When the Postgres instance is running, the [example](./example.exs) will
+populate both tables with 10 random columns.

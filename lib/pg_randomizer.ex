@@ -3,6 +3,22 @@ defmodule PgRandomizer do
   Documentation for `PgRandomizer`.
   """
 
+  def generate_with_connection(n, table_opts, db_opts) do
+    {:ok, queries } = PgRandomizer.generate(n, table_opts)
+
+    {:ok, pid} = Postgrex.start_link(
+      hostname: db_opts.hostname,
+      username: db_opts.username,
+      password: db_opts.password,
+      database: db_opts.database
+    )
+
+    Enum.map(queries, fn query ->
+      {:ok, _} = Postgrex.query(pid, query)
+    end)
+    :ok
+  end
+
   @doc """
   Generator of (for now only insert) SQL queries.
   Expects number of queries to generate and
