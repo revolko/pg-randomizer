@@ -1,4 +1,4 @@
-{:ok, queries } = PgRandomizer.generator(10, [
+{:ok, queries } = PgRandomizer.generate(10, [
   %{table_name: "films", columns: ["code", "title"], types: [:integer, :string]},
   %{table_name: "distributors", columns: ["did", "name"], types: [:integer, :string]},
 ])

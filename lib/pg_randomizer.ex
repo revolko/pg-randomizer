@@ -4,19 +4,6 @@ defmodule PgRandomizer do
   """
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> PgRandomizer.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
-
-  @doc """
   Generator of (for now only insert) SQL queries.
   Expects number of queries to generate and
   table specification (map with `table_name`, `columns`, and `types`).
@@ -29,8 +16,8 @@ defmodule PgRandomizer do
       ])
 
   """
-  @spec generator(integer, list(map())) :: {:ok, list(charlist())}
-  def generator(n, opts) when n > 0 do
+  @spec generate(integer, list(map())) :: {:ok, list(charlist())}
+  def generate(n, opts) when n > 0 do
     # create insert query for each table
     insert_queries = Enum.flat_map(opts, fn table_opts ->
         {:ok, insert_queries} = generate_inserts(n, table_opts)
