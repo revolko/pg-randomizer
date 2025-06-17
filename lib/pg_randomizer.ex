@@ -26,7 +26,7 @@ defmodule PgRandomizer do
 
   ## Examples
 
-      {:ok, queries } = PgRandomizer.generator(10, [
+      {:ok, queries} = PgRandomizer.generate(10, [
         %{table_name: "table", columns: ["a", "b"], types: [:integer, :string]},
         %{table_name: "table2", columns: ["a", "b"], types: [:integer, :string]},
       ])
@@ -45,7 +45,7 @@ defmodule PgRandomizer do
   end
 
   defp generate_inserts(n, table_opts, queries \\ [])
-  
+
   defp generate_inserts(0, _table_opts, queries) do
     {:ok, queries}
   end
@@ -55,9 +55,9 @@ defmodule PgRandomizer do
     query = query ++ ~c"\(#{Enum.join(table_opts.columns, ", ")}\) VALUES \("
     query = query ++ to_charlist(
       # generate random data for columns (based on types)
-      Enum.map_join(table_opts.types, ", ", fn type -> 
+      Enum.map_join(table_opts.types, ", ", fn type ->
         case type do
-          :integer -> 
+          :integer ->
             random_int()
           :string ->
             random_string()
