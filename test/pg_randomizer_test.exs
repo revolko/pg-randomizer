@@ -2,9 +2,13 @@ defmodule PgRandomizerTest do
   use ExUnit.Case
   doctest PgRandomizer
 
-  test "happy path" do
-    {res, query} = PgRandomizer.generator(2, %{a: :integer, b: :string})
+  test "generate" do
+    table_opts = [
+      %{table_name: "films", columns: ["code", "title"], types: [:integer, :string]},
+      %{table_name: "distributors", columns: ["did", "name"], types: [:integer, :string]},
+    ]
+    {res, queries} = PgRandomizer.generate(10, table_opts)
     assert res == :ok
-    assert is_list(query)
+    assert is_list(queries)
   end
 end
