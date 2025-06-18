@@ -32,7 +32,7 @@ defmodule PgRandomizer do
       ])
 
   """
-  @spec generate(integer, list(map())) :: {:ok, list(charlist())}
+  @spec generate(pos_integer(), list(Types.table_def())) :: {:ok, list(charlist())}
   def generate(n, opts) when n > 0 do
     # create insert query for each table
     insert_queries = Enum.flat_map(opts, fn table_opts ->
