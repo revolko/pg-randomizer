@@ -26,13 +26,13 @@ defmodule PgRandomizer do
 
   ## Examples
 
-      {:ok, queries } = PgRandomizer.generator(10, [
+      {:ok, queries} = PgRandomizer.generate(10, [
         %{table_name: "table", columns: ["a", "b"], types: [:integer, :string]},
         %{table_name: "table2", columns: ["a", "b"], types: [:integer, :string]},
       ])
 
   """
-  @spec generate(integer, list(map())) :: {:ok, list(charlist())}
+  @spec generate(pos_integer(), list(Types.table_def())) :: {:ok, list(charlist())}
   def generate(n, opts) when n > 0 do
     # create insert query for each table
     insert_queries = Enum.flat_map(opts, fn table_opts ->
@@ -45,7 +45,7 @@ defmodule PgRandomizer do
   end
 
   defp generate_inserts(n, table_opts, queries \\ [])
-  
+
   defp generate_inserts(0, _table_opts, queries) do
     {:ok, queries}
   end
@@ -55,26 +55,12 @@ defmodule PgRandomizer do
     query = query ++ ~c"\(#{Enum.join(table_opts.columns, ", ")}\) VALUES \("
     query = query ++ to_charlist(
       # generate random data for columns (based on types)
-      Enum.map_join(table_opts.types, ", ", fn type -> 
-        case type do
-          :integer -> 
-            random_int()
-          :string ->
-            random_string()
-          _ -> {:error, "unknown type"}
-        end
+      Enum.map_join(table_opts.types, ", ", fn type ->
+        Random.random(type)
       end)
     )
     query = query ++ ~c"\)"
 
     generate_inserts(n-1, table_opts, [query | queries])
-  end
-
-  defp random_int() do
-    to_string(:rand.uniform(100))
-  end
-
-  defp random_string() do
-    "\'#{to_string(:crypto.hash(:md5, random_int()) |> Base.encode16(case: :lower))}\'"
   end
 end
